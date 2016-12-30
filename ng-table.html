@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="Web/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="Web/styles/bootstrap-theme.min.css">
+    <script src="Web/js/vender/angular.min.js"></script>
+    <script src="Web/js/vender/ng-table.min.js"></script>
+    <script src="Web/js/vender/ng-table-resizable-columns.js"></script>
+    <script src="Web/js/vender/jquery203.js"></script>
+    <script src="Web/js/vender/underscore-min.js"></script>
+    <link rel="stylesheet" href="Web/styles/ng-table.min.css">
+    <link rel="stylesheet" href="Web/styles/crapApi.css">
+</head>
+<style>
+    table td{
+        text-align: center;
+    }
+    .ng-table-rowselected tr {
+        cursor: pointer;
+    }
+</style>
+<body ng-app="main">
+<!--demo-reponsiveTable clearfix 自适应变换样式-->
+<div ng-controller="DemoCtrl" class="container demo-reponsiveTable clearfix">
+
+    <!--提示监控数据-->
+    <p><strong>Page:</strong> {{tableParams.page()}}</p>
+    <p><strong>Count per page:</strong> {{tableParams.count()}}</p>
+    <button ng-click="tableParams.sorting({})" class="btn btn-default pull-right">Clear sorting</button>
+    <p><strong>Sorting:</strong> {{tableParams.sorting()|json}}</p>
+    <p><strong>choose:</strong> {{checkboxes.items}}</p>
+
+    <!--展示数据-->
+    <table ng-table="tableParams" class="table table-bordered table-striped ng-table-responsive ng-table-resizable-columns ng-table-rowselected">
+        <!--自定义表头 demo18-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th class="sortable" ng-class="{-->
+                    <!--'sort-asc': tableParams.isSortBy('name', 'asc'),-->
+                    <!--'sort-desc': tableParams.isSortBy('name', 'desc')-->
+                  <!--}"-->
+                <!--ng-click="tableParams.sorting({'name' : tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})" rowspan="2">-->
+                <!--<div><i class="glyphicon glyphicon-user"></i> Name</div>-->
+            <!--</th>-->
+            <!--<th colspan="2" class="text-center">Data</th>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th class="text-center sortable" ng-class="{-->
+                    <!--'sort-asc': tableParams.isSortBy('age', 'asc'),-->
+                    <!--'sort-desc': tableParams.isSortBy('age', 'desc')-->
+                  <!--}"-->
+                <!--ng-click="tableParams.sorting({'age' : tableParams.isSortBy('age', 'asc') ? 'desc' : 'asc'})">-->
+                <!--<div>Age</div>-->
+            <!--</th>-->
+            <!--<th class="text-center">双方都.</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+
+        <tr ng-repeat="user in $data"
+            ng-click="user.$selected = !user.$selected; changeSelection(user)"
+            ng-class="{'active': user.$selected, 'emphasis': user.id == 5}"
+        >
+            <!--checkbox框-->
+            <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+                <input type="checkbox" ng-model="checkboxes.items[user.id]" />
+            </td>
+
+            <td data-title="'ID'" sortable="'id'">
+                <span ng-class="{ 'plus': user.id >= 5,'minus': user.id < 5 }">{{user.id}}</span>
+            </td>
+            <td data-title="'姓名'" sortable="'username'">
+                <span ng-if="!user.$edit">{{user.username}}</span>
+                <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.username" /></div>
+            </td>
+            <td data-title="'邮箱'" sortable="'email'">
+                <span ng-if="!user.$edit"> {{user.email}}</span>
+                <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.email" /></div>
+            </td>
+            <td data-title="'操作'" >
+                <a ng-if="!user.$edit" href="" class="btn btn-default btn-xs" ng-click="user.$edit = true">Edit</a>
+                <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false">Save</a>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!--checkbox框-->
+    <script type="text/ng-template" id="ng-table/headers/checkbox.html">
+        <input type="checkbox" ng-model="checkboxes.checked" id="select_all" name="filter-checkbox" value="" />
+    </script>
+
+    <!--主程序-->
+    <script>
+//        ,'ngTableResizableColumns'
+        var app = angular.module('main', ['ngTable']).
+        controller('DemoCtrl', function($scope,$http, NgTableParams) {
+
+
+            $scope.tableParams = new NgTableParams({
+                page: 1,            // show first page
+                count: 10  ,         // count per page
+            }, {
+                total: 0,
+                 // length of data
+                getData: function( params) {
+                    var datai = {'service': 'User.usrlist'};
+                    datai.pageIndex =  params.page();
+                    datai.pageSize =  params.count();
+                    console.log();
+                    datai.sort = _.isEmpty(params.sorting()) ?  angular.toJson({id:"asc"}) : angular.toJson(params.sorting());
+                   return  $http({
+                        method : 'POST',
+                        url: 'Entrance/index.php',
+                        data: $.param(datai), //序列化参数
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(
+                            function(response){
+                                response = response.data;
+                                if (response.ret != '200' || response.data.code != '200') {
+                                    var loginE = (response.ret != '200') ? response.msg : response.data.msg;
+                                    var code = (response.ret != '200') ? response.ret : response.data.code;
+                                    alert(loginE);
+//                                $rootScope.mlService.setMessage('postData','错误报告：'+loginE+'; code：'+code,'error');
+                                    return;
+                                }
+                                params.total(response.data.total);
+                                $scope.users =  response.data.userlist;
+                                return response.data.userlist;
+
+                            }
+                    )
+                },
+
+            });
+
+            //checkbox事件
+            var inArray = Array.prototype.indexOf ?
+                    function (val, arr) {
+                        return arr.indexOf(val)
+                    } :
+                    function (val, arr) {
+                        var i = arr.length;
+                        while (i--) {
+                            if (arr[i] === val) return i;
+                        }
+                        return -1
+                    };
+            $scope.names = function(column) {
+                var def = $q.defer(),
+                        arr = [],
+                        names = [];
+                angular.forEach(data, function(item){
+                    if (inArray(item.name, arr) === -1) {
+                        arr.push(item.name);
+                        names.push({
+                            'id': item.name,
+                            'title': item.name
+                        });
+                    }
+                });
+                def.resolve(names);
+                return def;
+            };
+
+            $scope.checkboxes = { 'checked': false, items: {} };
+
+            // watch for check all checkbox
+            $scope.$watch('checkboxes.checked', function(value) {
+                angular.forEach($scope.users, function(item) {
+                    if (angular.isDefined(item.id)) {
+                        $scope.checkboxes.items[item.id] = value;
+                    }
+                });
+            });
+
+            // watch for data checkboxes
+            $scope.$watch('checkboxes.items', function(values) {
+                if (!$scope.users) {
+                    return;
+                }
+                var checked = 0, unchecked = 0,
+                        total = $scope.users.length;
+                angular.forEach($scope.users, function(item) {
+                    checked   +=  ($scope.checkboxes.items[item.id]) || 0;
+                    unchecked += (!$scope.checkboxes.items[item.id]) || 0;
+                });
+                if ((unchecked == 0) || (checked == 0)) {
+                    $scope.checkboxes.checked = (checked == total);
+                }
+                // grayed checkbox
+                angular.element(document.getElementById("select_all")).prop("indeterminate", (checked != 0 && unchecked != 0));
+            }, true);
+
+//            行点击事件
+            $scope.changeSelection = function(user) {
+                 console.info(user);
+            }
+
+        })
+    </script>
+
+</div>
+
+<style>
+    .ng-table .plus, .ng-table .minus {
+        font-weight: bold;
+        padding-left: 18px;
+        position: relative;
+    }
+    .ng-table .plus:before, .ng-table .minus:before {
+        content:"";
+        border-width: 4px;
+        border-style:solid;
+        left: 8px;
+        top: 50%;
+        position: absolute;
+        margin-top: -2px;
+    }
+    .ng-table .plus {
+        color: green;
+    }
+    .ng-table .plus:before {
+        border-color: green;
+        border-top:none;
+        border-left:4px solid transparent;
+        border-right:4px solid transparent;
+    }
+    .ng-table .minus {
+        color: red;
+    }
+    .ng-table .minus:before {
+        border-color: red;
+        border-bottom:none;
+        border-left:4px solid transparent;
+        border-right:4px solid transparent;
+    }
+    .ng-table tr.emphasis td {
+        background-color: #DDD;
+        font-weight: bold;
+    }
+</style>
+
+</body>
+</html>

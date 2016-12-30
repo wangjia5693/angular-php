@@ -1,0 +1,70 @@
+<style>
+	.modal-content{
+		width:436px;
+	}
+	.login-bg{
+		margin-top: 30px!important;
+	}
+	.login{
+
+		border: none;
+	}
+</style>
+
+<div class="row p0 m0 mt100 r10 login-bg  col-md-12">
+	<div class="p50 panel panel-default r10 z10 login">
+
+		<blockquote>
+			<sapn class="pl10 C000 f18 fb">用户登录</span>
+		</blockquote>
+		<input type="hidden" value="[ERROR][LOGINPAGE]" />
+		<form class="form-horizontal p15 mt10" ng-submit="submit()" form-autofill-fix>
+			<button type="button" class="ndis" id="refresh" ng-click="getData();"></button>
+			<div class="input-wrapper">
+				<input type="text"  name="username" ng-model="credentials.username" placeholder="用户名（6-20位）" autocomplete="off" required/>
+			</div>
+			<div class="input-wrapper">
+				<input type="password" name="password" ng-model="credentials.password" placeholder="密码（不少于6位）" autocomplete="off" required/>
+			</div>
+
+			<div class="form-group mt30 mb10">
+				<button type="submit"
+						class="btn btn-block btn-main r20 adorn-color" style="background-color: #407aaa;">
+					登入<i class='iconfont mt-1 pl10'>&#xe601;</i>
+				</button>
+			</div>
+
+			<div class="form-group mb0 f12 C555 tr" id="remberPwd">
+				<div class="btn-group fr" data-toggle="buttons">
+					<label
+							ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd != 'NO']"
+							ng-click="changeRadio('YES')"> <input type="radio"
+																  name="remberPwd" ng-model="model.remberPwd" value="YES"> YES
+					</label> <label
+						ng-class="{true: 'active btn btn-default btn-xs active', false: 'btn btn-default btn-xs'}[model.remberPwd == 'NO']"
+						ng-click="changeRadio('NO')"> <input type="radio"
+															 name="remberPwd" ng-model="model.remberPwd" value="NO"> NO
+				</label>
+				</div>
+				<div class="fr lab">记住密码?</div>
+				<!--<div class="fl lab">-->
+					<!--<a href="#/register">注册 →</a>-->
+				<!--</div>-->
+				<div class="fl lab">
+					<a href="#/findPwd">找回密码 →</a>
+				</div>
+			</div>
+
+		</form>
+		<div id="warnMessage" class="text-error mb15 mt10"></div>
+		<script type="text/ng-template" id="alert.html">
+			<div ng-transclude></div>
+		</script>
+		<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" ng-if="error">{{alert.msg}}</div>
+
+	</div>
+</div>
+
+
+
+

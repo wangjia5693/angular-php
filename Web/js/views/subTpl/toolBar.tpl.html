@@ -1,0 +1,32 @@
+<div id="content-header">
+    <h4 class='bs-docs-booticon bs-docs-booticon-lg bs-docs-booticon-outline' style="float: left;color:#428bca;height:auto!important;font-size: 14px; border-left-color: #1b809e;border-width: 1px 1px 1px 5px;" >{{node.title}}</h4>
+    <div class="btn-group" style="float: right">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="回退" ng-if="node.return" ng-click="nodeBack()">
+            <i class="fa fa-chevron-left" ></i>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="刷新" ng-if="node.fresh"  ng-click="nodeFresh()">
+            <i class="fa fa-refresh"></i>
+        </button>
+
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="首页" ng-if="node.home"  ui-sref="home">
+            <i class="fa fa-home "></i>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="菜单" ng-if="node.bar"  ng-click="taggle_nav()">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        <button type="button"  print-btn class="btn btn-default" data-toggle="tooltip" data-placement="top" title="打印" ng-if="node.print"  >
+            <i class="fa fa-print"></i>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导入" ng-if="node.import"  ng-click="import()">
+            <i class="fa fa-file-pdf-o"></i>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="导出" ng-if="node.export"  ng-click="export()">
+            <i class="fa fa-file-excel-o"></i>
+        </button>
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="新增" ng-if="node.addinfo"  ng-click="addinfo()">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+</div>
+<div style=" border-top: 1px dashed #cccccc;height: 1px;overflow: hidden; margin-top: 6px;margin-bottom: 6px; clear: both;"></div>

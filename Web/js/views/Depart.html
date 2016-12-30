@@ -1,0 +1,36 @@
+<div ng-controller="DepartController">
+
+
+
+    <toolbar></toolbar>
+<div class="panel panel-default" ng-class="{hidden: vm.hidden}">
+    <div class="panel-heading">
+        <div class="panel-title" style="font-size: 12px;">
+            <!--<toolbar></toolbar>-->
+            <span class="glyphicon glyphicon-th-list"></span>
+            点右侧的图标折叠/展开
+          <span class="pull-right">
+              <span class="glyphicon" ng-class="vm.collapsed?'glyphicon-chevron-down':'glyphicon-chevron-up'"
+                    ng-click="vm.collapsed = !vm.collapsed"></span>
+                &nbsp;
+              <span class="glyphicon glyphicon-remove" ng-click="vm.hidden = true"></span>
+          </span>
+        </div>
+    </div>
+    <div class="panel-collapse collapse" ng-class="{in: !vm.collapsed}">
+        <div class="panel-body">
+            <p>afdasfdsafasfasf</p>
+
+            <div print-section>
+                <div print-only>
+                    I'll print, but until then nobody wants me
+                    <p>Me, too!</p>
+                </div>
+                <div>Me, too! Except that people still want to look at me in the meantime...</div>
+            </div>
+        </div>
+    </div>
+</div>
+<span class="btn btn-primary" ng-click="vm.hidden = false" ng-if="vm.hidden">重新显示</span>
+
+</div>

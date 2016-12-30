@@ -1,0 +1,37 @@
+<div ng-controller="NodeController">
+    <toolbar></toolbar>
+
+    <div class=" demo-reponsiveTable clearfix row-content">
+
+        <!--展示数据-->
+        <table ng-table="tableParams" class="table table-bordered table-striped ng-table-responsive">
+            <colgroup>
+            <col width="50%"/>
+            <col width="50%"/>
+            </colgroup>
+            <tr class="ng-table-group" ng-repeat-start="group in $groups">
+                <td colspan="{{$groups.visibleColumnCount}}">
+                    <a href="" ng-click="group.$hideRows = !group.$hideRows">
+                        <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+                        <strong>{{ group.value }}</strong>
+                    </a>
+                </td>
+            </tr>
+            <tr ng-hide="group.$hideRows" ng-repeat="user in group.data" ng-repeat-end>
+                <td sortable="'role'" data-title="'Role'" groupable="'role'" ng-if="false">
+                    {{user.role}}
+                </td>
+                <td sortable="'name'" data-title="'Name'" groupable="'name'">
+                    {{user.name}}
+                </td>
+                <td sortable="'age'" data-title="'Age'">
+                    {{user.age}}
+                </td>
+            </tr>
+
+
+        </table>
+
+
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<div ng-controller="UserController">
+<toolbar></toolbar>
+
+<div class=" demo-reponsiveTable clearfix row-content">
+
+  <!--展示数据-->
+  <table ng-table="tableParams" show-filter="true" class="table table-bordered table-striped ng-table-responsive">
+
+    <!--ng-click="user.$selected = !user.$selected; changeSelection(user)"-->
+    <!--ng-class="{'active': user.$selected, 'emphasis': user.id == 5}"-->
+    <tr ng-repeat="user in $data"
+
+    >
+      <td data-title="'ID'" sortable="'id'" filter="{ 'id': 'id' }">
+        <span ng-class="{ 'plus': user.id >= 5,'minus': user.id < 5 }">{{user.id}}</span>
+      </td>
+      <td data-title="'姓名'" sortable="'username'" filter="{ 'username': 'username' }">
+        <span ng-if="!user.$edit">{{user.username}}</span>
+        <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.username" /></div>
+      </td>
+      <td data-title="'邮箱'" sortable="'email'" filter="{ 'email': 'email' }">
+        <span ng-if="!user.$edit"> {{user.email}}</span>
+        <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.email" /></div>
+      </td>
+      <td data-title="'手机号码'" sortable="'mobile'" filter="{ 'mobile': 'mobile' }">
+        <span ng-if="!user.$edit"> {{user.mobile}}</span>
+        <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.mobile" /></div>
+      </td>
+      <td data-title="'操作'" filter="{ 'action': 'action' }">
+        <a ng-if="!user.$edit" href=""  ng-click="user.$edit = true"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          编辑</a>
+        <a ng-if="user.$edit" href="" ng-click="user.$edit = false"><i class="fa fa-floppy-o" aria-hidden="true"></i>
+          保存</a>
+        <a ng-click="">
+          <i class="fa fa-eraser" aria-hidden="true"></i>
+          删除
+        </a>
+      </td>
+    </tr>
+
+  </table>
+
+  <!--搜索类型定义-->
+  <script type="text/ng-template" id="ng-table/filters/id.html">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+      <input type="text" class="form-control" ng-model="searchi.id" name="filter-id" value="" />
+    </div>
+  </script>
+  <script type="text/ng-template" id="ng-table/filters/username.html">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+      <input type="text" class="form-control" ng-model="searchi.username" name="filter-username" value="" />
+    </div>
+  </script>
+  <script type="text/ng-template" id="ng-table/filters/email.html">
+    <div class="input-group">
+      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+      <input type="text" class="form-control" ng-model="searchi.email" name="filter-email" value="" />
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="ng-table/filters/action.html">
+      <a ng-click="search()" style="width: 100%;height: 30px;text-align: center;display: block;vertical-align: middle">
+        <i class="fa fa-search fa-lg" aria-hidden="true"></i>
+      </a>
+  </script>
+
+
+  <!--新增编辑框-->
+  <script type="text/ng-template" id="userModalContent.html">
+    <div class="modal-header">
+      <h3 class="modal-title">{{modalTitle}}</h3>
+    </div>
+    <div class="modal-body">
+      <form name="form" novalidate class="form-horizontal">
+        <div class="form-group" ng-class="{ 'has-error' : form.userName.$invalid && form.userName.$dirty}">
+          <label class="col-md-2 control-label text-right"><span class="text-danger">*</span>姓名：</label>
+          <div class="col-md-7">
+            <input type="text" class="form-control" name="userName"
+                   ng-model="entity.userName" ng-required="true">
+          </div>
+          <div class="help-block col-md-3" ng-show="form.userName.$dirty && form.userName.$invalid">
+                <span class="text-danger"
+                      ng-show="form.userName.$error.required">请填写姓名</span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : form.email.$invalid && form.email.$dirty}">
+          <label class="col-sm-2 control-label text-right"><span class="text-danger">*</span>邮箱：</label>
+          <div class="col-sm-7">
+            <input type="email" class="form-control" name="email"
+                   ng-model="entity.email" ng-required="true">
+          </div>
+          <div class="help-block col-sm-3" ng-show="form.email.$dirty && form.email.$invalid">
+                <span class="text-danger"
+                      ng-show="form.email.$error.email">请填写正确的邮箱地址</span>
+                <span class="text-danger"
+                      ng-show="form.email.$error.required">请填写邮箱</span>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : form.mobile.$invalid && form.mobile.$dirty}">
+          <label class="col-sm-2 control-label text-right">手机：</label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" name="mobile"
+                   ng-maxlength="12"
+                   ng-minlength="5"
+                   ng-model="entity.mobile">
+          </div>
+          <div class="help-block col-sm-3" ng-show="form.mobile.$dirty && form.mobile.$invalid">
+            <span class="text-danger"
+                  ng-show="form.mobile.$error.maxlength">最大长度为12</span>
+
+             <span class="text-danger"
+                   ng-show="form.mobile.$error.minlength">最小长度为5</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a class=" text-success btn-boder"  ng-click="ok(form.$valid)">{{modalAction}}</a>
+      <a class=" text-info btn-boder"  ng-click="cancel()">取消</a>
+    </div>
+  </script>
+
+</div>
+</div>

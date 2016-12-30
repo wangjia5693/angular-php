@@ -1,0 +1,15 @@
+<div class="modal fade in"  tabindex="-1" role="dialog"  aria-hidden="true" style="display: block;min-width: 480px;width: auto;margin-top: 115px" ng-show="errortitle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="hideModali()">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-warning" style="margin-left: 8px;margin-right: 12px"></i>{{errortitle}}</h4>
+            </div>
+            <div class="modal-body">{{errormessage}}</div>
+            <div class="modal-footer" style="text-align: center">
+                <a data-dismiss="modal" style="" ng-click="hideModali()">我知道了</a>
+                <!--<button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>-->
+            </div>
+        </div>
+    </div>
+</div>

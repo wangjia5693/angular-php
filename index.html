@@ -1,0 +1,134 @@
+<!doctype html>
+<html ng-cloak>
+
+<head>
+<meta charset="utf-8">
+<title>新框架系统</title>
+<base href="/">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+<link rel="stylesheet" href="Web/styles/bootstrap.min.css">
+<link rel="stylesheet" href="Web/styles/bootstrap-theme.min.css">
+<link href="Web/styles/base.css" rel="stylesheet" type="text/css" />
+<link href="Web/styles/globle.css" rel="stylesheet" type="text/css" />
+<script src="Web/js/vender/Vague.js"></script>
+<link href="Web/styles/loading-bar.min.css" rel="stylesheet" type="text/css" />
+<link href="Web/styles/ng-table.min.css" rel="stylesheet" type="text/css" />
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link media="print" rel="stylesheet" href="Web/styles/angularPrint.css">
+<link rel="stylesheet" href="Web/styles/angular-toastr.min.css">
+<script src="Web/js/vender/jquery203.js"></script>
+<style>
+    .alert{
+        width:96%;
+        margin:0 auto
+    }
+</style>
+</head>
+
+<body ng-controller="ParentCtrl" class="login-bg">
+
+<!--引导页-->
+<div ng-if="!currentUser" style="width: 100%;height: 100%"  class="container load_f">
+
+</div>
+<!--正文-->
+<div  ng-if="currentUser" class="full_screen cle dom_contain">
+
+    <!--导航页-->
+
+    <div  class="fl page_left" style="background-color: #222d32;" ng-class="{'hide':!nav_side}">
+        <div ng-include="'Web/js/views/subTpl/frontTopNav.tpl.html'" ></div>
+    </div>
+
+    <!--工作台-->
+    <div class="fl page_right" id="work_tabs">
+        <div style="height:50px" id="work_tab">
+                <div class="navbar-header" >
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" ng-click="taggle_nav()">
+                        <i class="fa fa-navicon fa-lg"  style="margin-right: 6px"></i>
+                        New FW
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a > <i class=" fa fa-user-o"></i>  <span ng-bind="currentUser.username"></span></a></li>
+                        <li><a href="#" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> 退出</a></li>
+                    </ul>
+                </div>
+        </div>
+
+        <!--tip提示框-->
+        <alert-bar class="alert_bar" message="tipService.message" type="tipService.type" style="margin: 28px 40px 0 40px;"></alert-bar>
+
+        <!--消息弹出层-->
+
+        <testmodal  errormessage="mlService.err_tip_message" errortitle="mlService.err_tip_title"  errortype="mlService.err_tip_type"></testmodal>
+
+        <!--内容页-->
+        <div ui-view style="margin: 28px 40px 0 40px">
+
+        </div>
+
+    </div>
+
+    <!--debug信息-->
+    <div ng-if="is_debug">
+        <div ng-if="debug">
+            <div><b> <span ng-bind="debug_info.code"></span></b><b> <span ng-bind="debug_info.msg"></span></b></div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="ft-bg">
+            <div class="ft_main">
+                <div class="ft_txt">
+
+                    <p>
+                        杭州徐娜拉电子商务有限公司 版权所有 Copyright©2016
+                        <a href="http://www.miitbeian.gov.cn" target="_blank" rel="nofollow">浙ICP备11012845号-5</a>
+                    </p>
+
+                    <p class="ft_contact">
+                        <span>服务时间：09:00-23:00</span>
+                <span class="ft_phone">
+                客服热线: <em>4007-112-112</em>
+                </span>
+                    </p>
+                    <div style="width:300px;margin:0 auto; padding:0;">
+                        <a target="_blank"
+                           href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010402002039"
+                           style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                            <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备
+                                33010402002039号</p></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--首次加载引导页-->
+<script>
+    var load_html = "<div class='commentAvatarDiv'><img class='commentAvatarImage' src='Web/images/simba.png'> </div><div style='width:100%;height:90px;margin: 0 auto;text-align: center;margin-top: 56px;'><span class='bs-docs-booticon bs-docs-booticon-lg bs-docs-booticon-outline'> PMP 全流程管理系统</span></div><div style='width: 100%; margin-top: 100px;'><p class='version'>当前版本： v0.0.1  |  2016 Simba All Rights Reserved</p></div> ";
+    if(!sessionStorage['loaded']){
+        $('.load_f').html(load_html).attr('id','load');
+        setGradient('load', '#c81fc1', '#bf445f', 0);
+    }else{
+        $('.load_f').html("");
+        $('.load_f').attr('id','loaded');;
+    };
+</script>
+
+<!--require动态按需加载-->
+<script data-main="Web/js/main.js" src="Web/js/vender/require.js"></script>
+</body>
+
+</html>
+

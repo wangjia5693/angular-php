@@ -1,0 +1,5 @@
+[2016-12-27 13:23:46] my_logger.INFO: My logger is now ready [] []
+[2016-12-27 13:25:24] my_logger.INFO: Adding a new user {"username":"Seldaek"} []
+[2016-12-27 13:26:34] my_logger.INFO: Adding a new user {"username":"Seldaek"} {"dummy":"Hello world!"}
+2016 12 27, 1:33 pm > INFO > Adding a new user {"username":"Seldaek"} {"dummy":"Hello world!"}
+

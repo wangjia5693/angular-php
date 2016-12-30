@@ -1,0 +1,9 @@
+{
+"require":{
+"illuminate/database": "*",
+        "league/flysystem": "^1.0",
+                "monolog/monolog": "^1.22",
+                "theorchard/monolog-cascade": "^0.4.1",
+                "pda/pheanstalk": "^3.1"
+}
+}
